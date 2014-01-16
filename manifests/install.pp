@@ -16,7 +16,7 @@ class logstash::install inherits logstash {
   case $logstash::install {
     package: {
 
-      if $::logstash::bool_manage_repo {
+      if $::logstash::bool_manage_repository {
         case $::operatingsystem {
           /^(Debian|Ubuntu|Mint)$/: {
             if $::logstash::bool_firewall {
@@ -31,8 +31,8 @@ class logstash::install inherits logstash {
                 before         => Apt::Repository['logstash']
               }
             }
-  
-            $tpl ='<%=@scope.lookupvar("::logstash::version").to_s.match(/\d+.\d+/)[0] %>'
+
+            $tpl ='<%= scope.lookupvar("::logstash::version").to_s.match(/\d+.\d+/)[0] %>'
             $minor_version = inline_template($tpl)
             apt::repository { 'logstash':
               url        => "http://packages.elasticsearch.org/logstash/${minor_version}/debian",
@@ -42,7 +42,7 @@ class logstash::install inherits logstash {
               key        => 'D88E42B4',
               before     => Package['logstash'],
             }
-  
+
           }
           default: {
             fail('Using $manage_repo is currently only supported under Debian*')
