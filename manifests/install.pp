@@ -15,6 +15,40 @@ class logstash::install inherits logstash {
 
   case $logstash::install {
 
+    if $::logstash::bool_manage_repo {
+      case $::operatingsystem {
+        /^(Debian|Ubuntu|Mint)$/: {
+          if $::logstash::bool_firewall {
+             # The before=> entry is not too relevant given that you need 
+             # Service['iptables'] probably
+            firewall { 'logstash-apt':
+              destination    => 'packages.elasticsearch.org',
+              destination_v6 => 'packages.elasticsearch.org',
+              protocol       => 'tcp',
+              port           => 80,
+              direction      => 'output',
+              before         => Apt::Repository['logstash']
+            }
+          }
+
+          $tpl ='<%=@scope.lookupvar("::logstash::version").to_s.match(/\d+.\d+/)[0] %>'
+          $minor_version = inline_template($tpl)
+          apt::repository { 'logstash':
+            url        => "http://packages.elasticsearch.org/logstash/${minor_version}/debian",
+            distro     => 'stable',
+            repository => 'main',
+            key_url    => 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch',
+            key        => 'D88E42B4',
+            before     => Package['logstash'],
+          }
+
+        }
+        default: {
+          fail('Using $manage_repo is currently only supported under Debian*')
+        }
+      }
+    }
+
     package: {
       package { 'logstash':
         ensure => $logstash::manage_package,

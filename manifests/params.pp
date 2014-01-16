@@ -18,12 +18,18 @@ class logstash::params {
   $run_options = ''
   $install_prerequisites = true
   $create_user = true
-  $version = '1.1.13'
+  $version = '1.3.2'
   $jartype = 'flatjar'
   $install = 'source'
   $install_destination = '/opt'
   $install_precommand = ''
   $install_postcommand = ''
+
+  if $::operatingsystem =~ /^(Debian|Ubuntu|Mint)$/ {
+    $manage_repository = true
+  } else {
+    $manage_repository = false
+  }
 
   $init_script_template = $::osfamily ? {
     'Debian' => 'logstash/logstash.init.erb',

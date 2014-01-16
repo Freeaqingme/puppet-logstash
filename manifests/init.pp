@@ -71,6 +71,9 @@
 #   Check logstash/manifests/params.pp before overriding the default settings
 #   Can be defined also by the variable $logstash_install_postcommand
 #
+# [*manage_repository*]
+#   Use the Logstash repository if true and installing from package
+#
 # [*init_script_template*]
 #   The template to use to create the init script.
 #   Use this to customize the default file.
@@ -297,6 +300,7 @@ class logstash (
   $install_destination   = params_lookup('install_destination'),
   $install_precommand    = params_lookup('install_precommand'),
   $install_postcommand   = params_lookup('install_postcommand'),
+  $manage_repository     = params_lookup('manage_repository'),
   $init_script_template  = params_lookup('init_script_template'),
   $upstart_template      = params_lookup('upstart_template'),
   $use_upstart           = params_lookup('use_upstart'),
@@ -340,13 +344,15 @@ class logstash (
   $log_dir               = params_lookup('log_dir'),
   $log_file              = params_lookup('log_file'),
   $port                  = params_lookup('port'),
-  $protocol              = params_lookup('protocol')) inherits logstash::params {
+  $protocol              = params_lookup('protocol')
+) inherits logstash::params {
   # ## VARIABLES
 
   # ## Variables reduced to booleans
   $bool_install_prerequisites = any2bool($install_prerequisites)
   $bool_use_upstart = any2bool($use_upstart)
   $bool_create_user = any2bool($create_user)
+  $bool_manage_repository = any2bool($manage_repository)
   $bool_source_dir_purge = any2bool($source_dir_purge)
   $bool_service_autorestart = any2bool($service_autorestart)
   $bool_absent = any2bool($absent)
