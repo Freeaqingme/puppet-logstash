@@ -23,7 +23,7 @@ class logstash::install inherits logstash {
                # The before=> entry is not too relevant given that you need 
                # Service['iptables'] probably
               firewall { 'logstash-apt':
-                destination    => 'packages.elasticsearch.org',
+                destination    => [ '176.32.100.76', '176.32.102.65' ], # packages.elasticsearch.org
                 destination_v6 => 'packages.elasticsearch.org',
                 protocol       => 'tcp',
                 port           => 80,
