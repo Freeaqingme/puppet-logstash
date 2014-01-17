@@ -22,13 +22,14 @@ class logstash::install inherits logstash {
             if $::logstash::bool_firewall {
                # The before=> entry is not too relevant given that you need 
                # Service['iptables'] probably
-              firewall { 'logstash-apt':
-                destination    => [ '176.32.100.76', '176.32.102.65' ], # packages.elasticsearch.org
-                destination_v6 => 'packages.elasticsearch.org',
-                protocol       => 'tcp',
-                port           => 80,
-                direction      => 'output',
-                before         => Apt::Repository['logstash']
+              firewall::rule { 'logstash-apt':
+#                destination               => # packages.elasticsearch.org   # AWS, dynamic IP's :(
+#                destination_v6            => 'packages.elasticsearch.org',  # AWS, dynamic IP's :(
+                protocol                  => 'tcp',
+                port                      => 80,
+                direction                 => 'output',
+                iptables_explicit_matches => { 'owner' => { 'uid-owner' => 'root' }},
+                before                    => Apt::Repository['logstash']
               }
             }
 
