@@ -74,7 +74,8 @@ class logstash::params {
   }
 
   $config_file = $::operatingsystem ? {
-    default => '/etc/logstash/logstash.conf',
+    'FreeBSD' => '/usr/local/etc/logstash/logstash.conf',
+    default   => '/etc/logstash/logstash.conf',
   }
 
   $config_file_mode = $::operatingsystem ? {
@@ -86,7 +87,8 @@ class logstash::params {
   }
 
   $config_file_group = $::operatingsystem ? {
-    default => 'root',
+    'FreeBSD' => 'wheel',
+    default   => 'root',
   }
 
   $pid_file = $::operatingsystem ? {
@@ -94,7 +96,8 @@ class logstash::params {
   }
 
   $config_dir = $::operatingsystem ? {
-    default => '/etc/logstash',
+    'FreeBSD' => '/usr/local/etc/logstash',
+    default   => '/etc/logstash',
   }
 
   $data_dir = ''
