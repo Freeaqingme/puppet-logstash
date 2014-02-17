@@ -90,7 +90,7 @@
 #   Path (in format: puppet:///modules/path) where that contains custom patterns
 #   to use with logstash. You have to refer to it in your grok stanzas as:
 #   patterns_dir => "<%= scope.lookupvar('logstash::logstash_dir') %>/patterns"
-#   Default blank. Stadard patterns are used.
+#   Default blank. Standard patterns are used.
 #
 # Standard class parameters
 # Define the general class behaviour and customizations
