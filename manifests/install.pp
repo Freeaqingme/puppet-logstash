@@ -24,7 +24,6 @@ class logstash::install inherits logstash {
                # Service['iptables'] probably
               firewall::rule { 'logstash-apt':
 #                destination               => # packages.elasticsearch.org   # AWS, dynamic IP's :(
-#                destination_v6            => 'packages.elasticsearch.org',  # AWS, dynamic IP's :(
                 protocol                  => 'tcp',
                 port                      => 80,
                 direction                 => 'output',
